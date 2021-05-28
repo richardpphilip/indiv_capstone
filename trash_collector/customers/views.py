@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Customer
 import requests
+from django.apps import apps
 import json
-
 
 # Create your views here.
 
@@ -16,12 +16,24 @@ headers = {
 
 
 def index(request):
-    # get the logged in user within any view function
     user = request.user
-    # This will be useful while creating a customer to assign the logged in user as the user foreign key
-    # Will also be useful in any function that needs
-    print(user)
-    return render(request, 'customers/index.html')
+    Position = apps.get_model('positions.Position')
+    positions = Position.objects.all()
+    selected_positions = []
+    for position in positions:
+        if user.id == position.user_id:
+            selected_positions.append(position)
+    selected_tickers = []
+    selected_values = []
+    i = 0
+
+    for i in range(len(selected_positions)):
+        selected_tickers += selected_positions[i].selected_ticker
+        selected_values += str(selected_positions[i].selected_value)
+        print(selected_positions[i].selected_ticker)
+        print(str(selected_positions[i].selected_value))
+        i += 1
+    return render(request, 'customers/index.html', {'selected_positions': selected_positions, 'selected_tickers': selected_tickers, 'selected_values': selected_values})
 
 
 def stock(request):
@@ -31,7 +43,7 @@ def stock(request):
 def apicall(request):
     ticker = request.GET['ticker']
     price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{ticker}/prices',
-                                   headers=headers)
+                              headers=headers)
     stock_info = price_json.json()
 
     meta_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{ticker}',
@@ -44,4 +56,7 @@ def apicall(request):
     low_value = stock_info[0]['low']
     volume = stock_info[0]['volume']
 
-    return render(request, 'customers/stock.html', {'stock_info': stock_info, 'ticker': ticker, 'close_value': close_value, 'high_value': high_value, 'low_value' : low_value, 'volume': volume,'stock_name': stock_name, 'stock_description': stock_description})
+    return render(request, 'customers/stock.html',
+                  {'stock_info': stock_info, 'ticker': ticker, 'close_value': close_value, 'high_value': high_value,
+                   'low_value': low_value, 'volume': volume, 'stock_name': stock_name,
+                   'stock_description': stock_description})

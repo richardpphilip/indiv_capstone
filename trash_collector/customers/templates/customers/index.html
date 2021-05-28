@@ -11,6 +11,18 @@ v {% extends 'base.html' %}
 
 
 </form>
+<br>
+
+{% for selected_ticker in selected_tickers %}
+ {{selected_ticker}}
+
+{% endfor %}
+<br>
+{% for selected_value in selected_values %}
+{{selected_value}}
+
+{% endfor %}
+
 
 <li> <a href="{% url 'customers:stock'  %}">stock page</a></li>
   {% else %}
