@@ -7,6 +7,10 @@ from .models import Position
 
 
 # Create your views here.
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Token faadb088abbd151884296572be6b19d0321922b3'
+}
 
 
 def index(request):
@@ -18,7 +22,12 @@ def create(request):
         user = request.user
         selected_ticker = request.POST.get('selected_ticker')
         selected_value = request.POST.get('selected_value')
-        new_position = Position(selected_ticker=selected_ticker, selected_value=selected_value, user_id=user.id)
+        price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{selected_ticker}/prices',
+                                  headers=headers)
+        stock_info = price_json.json()
+        close_value = stock_info[0]['close']
+        stock_close_value = close_value
+        new_position = Position(selected_ticker=selected_ticker, selected_value=selected_value,stock_close_value=stock_close_value, user_id=user.id)
         new_position.save()
         return HttpResponseRedirect(reverse('positions:index'))
     else:

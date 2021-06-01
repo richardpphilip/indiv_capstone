@@ -7,6 +7,8 @@ class Position(models.Model):
     selected_ticker = models.CharField(max_length=5, null=True)
     selected_value = models.IntegerField(default=0)
     position_value = models.IntegerField(default=0, null=True)
+    stock_close_value = models.IntegerField(default=0,null=True)
+
 
     def __str__(self):
         return self.selected_ticker

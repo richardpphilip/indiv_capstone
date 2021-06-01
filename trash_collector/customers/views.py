@@ -19,40 +19,14 @@ def index(request):
     Position = apps.get_model('positions.Position')
     positions = Position.objects.all()
     selected_positions = []
+    portfolio_balance = 0
     for position in positions:
         if user.id == position.user_id:
+            portfolio_balance += position.stock_close_value
             selected_positions.append(position)
-    selected_tickers = []
-    selected_values = []
-    stock_values =[]
-    position_values = []
-    i = 0
-    j= 0
-
-    for i in range(len(selected_positions)):
-        selected_tickers += selected_positions[i].selected_ticker
-        selected_values += str(selected_positions[i].selected_value)
-        print(selected_positions[i].selected_ticker)
-        print(str(selected_positions[i].selected_value))
-        i += 1
-
-    for j in range(len(selected_positions)):
-        ticker = selected_positions[j].selected_ticker
-        price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{ticker}/prices',
-                                  headers=headers)
-        stock_info = price_json.json()
-        close_value = stock_info[0]['close']
-        print(close_value)
-        position_value = close_value * selected_positions[j].selected_value
-        print(position_value)
-        stock_values += str(close_value)
-        position_values += str(position_value)
-        j += 1
-
 
     return render(request, 'customers/index.html',
-                  {'selected_positions': selected_positions, 'selected_tickers': selected_tickers,
-                   'selected_values': selected_values, 'stock_values': stock_values, 'position_values': position_values})
+                  {'selected_positions': selected_positions, 'portfolio_balance': portfolio_balance})
 
 
 def stock(request):
@@ -75,10 +49,14 @@ def apicall(request):
     low_value = stock_info[0]['low']
     volume = stock_info[0]['volume']
 
-
     return render(request, 'customers/stock.html',
                   {'stock_info': stock_info, 'ticker': ticker, 'close_value': close_value, 'high_value': high_value,
                    'low_value': low_value, 'volume': volume, 'stock_name': stock_name,
                    'stock_description': stock_description})
 
 
+def stock_details(request, position_id):
+    Position = apps.get_model('positions.Position')
+    position = Position.objects.get(pk=position_id)
+    print(position)
+    return render(request, 'customers/stock_details.html',{'position': position})

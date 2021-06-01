@@ -8,11 +8,13 @@
 
 
   <h2>Your Stock Positions</h2>
+ <h3>The total value of your portfolio is:  ${{portfolio_balance}}</h3>
 <table class ="table">
   <thead>
   <th scope="col">Stock Ticker</th>
   <th scope="col">Number of Shares</th>
   <th scope="col"> Stock Value</th>
+  <th scope="col">View Details </th>
 
   </thead>
 <tbody>
@@ -24,15 +26,18 @@
  <td>
  {{selected_position.selected_value}}
  </td>
+    <td>
+        {{selected_position.stock_close_value}}
+    </td>
 
+    <td>
+        <a href="{% url 'customers:stock_details' selected_position.id %}">View Details</a>
+    </td>
 {% endfor %}
 
- {% for stock_value in stock_values %}
- <td>
- {{stock_value}}
- </td>
+
 </tr>
-{% endfor %}
+
   </tbody>
 </table>
  <br>
