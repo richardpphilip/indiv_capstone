@@ -1,0 +1,22 @@
+ {% extends 'base.html' %}
+
+{% block title %}{% block header %} Position Index{% endblock %}{% endblock %}
+ {% block content %}
+ {% if user.is_authenticated %}
+    Hello Customer {{ user.username }}!
+ <h1>Add a Stock to Portfolio</h1>
+ <form action="{% url 'positions:add_stock' %}" method="post">
+ {% csrf_token %}
+ Stock Ticker:<input type="text" name="selected_ticker" id="selected_ticker"><br>
+ Share Number:<input type="number" name="selected_value" id="selected_value"><br>
+ <input type="submit" value="Add Stock to Portfolio">
+</form>
+
+
+
+  {% else %}
+    <p>You are at the customer index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}
