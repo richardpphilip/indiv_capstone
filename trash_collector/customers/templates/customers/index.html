@@ -1,30 +1,49 @@
-v {% extends 'base.html' %}
+ {% extends 'base.html' %}
 
 {% block title %}{% block header %} Customer Home {% endblock %}{% endblock %}
 
 {% block content %}
   {% if user.is_authenticated %}
     Hello Customer {{ user.username }}!
+
+
+  <h2>Your Stock Positions</h2>
+<table class ="table">
+  <thead>
+  <th scope="col">Stock Ticker</th>
+  <th scope="col">Number of Shares</th>
+  <th scope="col"> Stock Value</th>
+
+  </thead>
+<tbody>
+ {% for selected_position in selected_positions %}
+<tr><td>
+{{selected_position.selected_ticker}}
+</td>
+
+ <td>
+ {{selected_position.selected_value}}
+ </td>
+
+{% endfor %}
+
+ {% for stock_value in stock_values %}
+ <td>
+ {{stock_value}}
+ </td>
+</tr>
+{% endfor %}
+  </tbody>
+</table>
+ <br>
+ <h2>Search for a Stock!</h2>
 <form action="add">
   Enter Stock Ticker: <input type="text" name="ticker"><br>
   <input type="submit">
 
 
 </form>
-<br>
-
-{% for selected_ticker in selected_tickers %}
- {{selected_ticker}}
-
-{% endfor %}
-<br>
-{% for selected_value in selected_values %}
-{{selected_value}}
-
-{% endfor %}
-
-
-<li> <a href="{% url 'customers:stock'  %}">stock page</a></li>
+<a href="{% url 'positions:index' %}">Add a Stock Position</a>
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>

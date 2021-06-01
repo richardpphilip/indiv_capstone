@@ -7,7 +7,6 @@ import json
 
 # Create your views here.
 
-# TODO: Create a function for each path created in customers/urls.py. Each will need a template as well.
 
 headers = {
     'Content-Type': 'application/json',
@@ -25,7 +24,10 @@ def index(request):
             selected_positions.append(position)
     selected_tickers = []
     selected_values = []
+    stock_values =[]
+    position_values = []
     i = 0
+    j= 0
 
     for i in range(len(selected_positions)):
         selected_tickers += selected_positions[i].selected_ticker
@@ -33,7 +35,24 @@ def index(request):
         print(selected_positions[i].selected_ticker)
         print(str(selected_positions[i].selected_value))
         i += 1
-    return render(request, 'customers/index.html', {'selected_positions': selected_positions, 'selected_tickers': selected_tickers, 'selected_values': selected_values})
+
+    for j in range(len(selected_positions)):
+        ticker = selected_positions[j].selected_ticker
+        price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{ticker}/prices',
+                                  headers=headers)
+        stock_info = price_json.json()
+        close_value = stock_info[0]['close']
+        print(close_value)
+        position_value = close_value * selected_positions[j].selected_value
+        print(position_value)
+        stock_values += str(close_value)
+        position_values += str(position_value)
+        j += 1
+
+
+    return render(request, 'customers/index.html',
+                  {'selected_positions': selected_positions, 'selected_tickers': selected_tickers,
+                   'selected_values': selected_values, 'stock_values': stock_values, 'position_values': position_values})
 
 
 def stock(request):
@@ -56,7 +75,10 @@ def apicall(request):
     low_value = stock_info[0]['low']
     volume = stock_info[0]['volume']
 
+
     return render(request, 'customers/stock.html',
                   {'stock_info': stock_info, 'ticker': ticker, 'close_value': close_value, 'high_value': high_value,
                    'low_value': low_value, 'volume': volume, 'stock_name': stock_name,
                    'stock_description': stock_description})
+
+

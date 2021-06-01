@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('customers/', include('customers.urls')),
     path('employees/', include('employees.urls')),
+    path('positions/', include('positions.urls')),
     # 'home' redirects a user to the appropriate index based on their auth group. Investigate views.py for more info
     path('', views.group_redirect, name='home')
 ]

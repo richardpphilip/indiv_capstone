@@ -12,7 +12,6 @@
  Closing value:{{close_value}}<br>
   Stock Description: {{stock_description}}<br>
 
-<li> <a href="{% url 'customers:stock'  %}">stock page</a></li>
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>

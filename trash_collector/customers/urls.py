@@ -8,5 +8,5 @@ app_name = "customers"
 urlpatterns = [
     path('', views.index, name="index"),
     path('stocks/', views.apicall, name="stock"),
-    path('add', views.apicall, name='add')
+    path('add', views.apicall, name='add'),
 ]
