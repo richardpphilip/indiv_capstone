@@ -8,10 +8,10 @@
     var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [{% for historical_date in historical_dates %}'{{historical_date}}',{% endfor %}],
         datasets: [{
             label: ' Stock: {{position}} ',
-            data: [{{one}}, {{two}}, {{three}}, {{four}}, {{five}} ],
+            data: [{% for historical_price in historical_prices %}'{{historical_price}}',{% endfor %}],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -45,7 +45,7 @@
  {% block content %}
  {% if user.is_authenticated %}
 
-
+{{historical_data_json}}
  <canvas id="myChart" width="200" height="100"></canvas>
 
 

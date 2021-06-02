@@ -1,3 +1,5 @@
+from os.path import join
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -74,12 +76,25 @@ def stock_details(request, position_id):
     two = historical_data_json[3]['close']
     one = historical_data_json[4]['close']
     five_date_time = historical_data_json[0]['date']
-    five_date = datetime.strptime()
-    print(five_date_time)
-    print(type(five_date_time))
+    four_date_time = historical_data_json[1]['date']
+    three_date_time = historical_data_json[2]['date']
+    two_date_time = historical_data_json[3]['date']
+    one_date_time = historical_data_json[4]['date']
+    i = 0
+    historical_prices = []
+    historical_dates = []
+    for i in range(len(historical_data_json)):
+        historical_prices.append(historical_data_json[i]['close'])
+        historical_dates.append(historical_data_json[i]['date'])
+        print(historical_dates)
 
-    return render(request, 'customers/stock_details.html',{'position': position, 'historical_data_json': historical_data_json, 'five': five, 'four': four, 'three': three, 'two': two, 'one': one})
 
+
+
+
+
+
+    return render(request, 'customers/stock_details.html',{'position': position, 'historical_data_json': historical_data_json, 'historical_prices' :historical_prices , 'historical_dates': historical_dates})
 def update_all(request):
 
     return render(request, 'customers/index.html')
