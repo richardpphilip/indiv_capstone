@@ -1,6 +1,6 @@
  {% extends 'base.html' %}
 
-{% block title %}{% block header %} Stock Details{% endblock %}{% endblock %}
+{% block title %}{% block header %} {{position}} Stock Details{% endblock %}{% endblock %}
  {% block scripts %}
  <script>
    $(document).ready(function(){
@@ -45,7 +45,6 @@
  {% block content %}
  {% if user.is_authenticated %}
 
-{{historical_data_json}}
  <canvas id="myChart" width="200" height="100"></canvas>
 
 

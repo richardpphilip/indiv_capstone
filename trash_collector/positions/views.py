@@ -37,6 +37,10 @@ def create(request):
         print('error')
         return HttpResponseRedirect(reverse('positions:index'))
 
+def update_all(request):
+    print("this works")
+    return render(request, 'positions/update_all.html')
+
 
 
 

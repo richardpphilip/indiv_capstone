@@ -10,6 +10,7 @@ from django.apps import apps
 import datetime
 
 import json
+
 # Create your views here.
 
 
@@ -66,9 +67,10 @@ def stock_details(request, position_id):
     today = datetime.date.today()
     five_delta = datetime.timedelta(-10)
     early_day = today + five_delta
-    historical_data = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}/prices?startDate={early_day}&endDate={today}&format=json&resampleFreq=daily',
-                 headers=headers)
-    historical_data_json= historical_data.json()
+    historical_data = requests.get(
+        f'https://api.tiingo.com/tiingo/daily/{position}/prices?startDate={early_day}&endDate={today}&format=json&resampleFreq=daily',
+        headers=headers)
+    historical_data_json = historical_data.json()
 
     five = historical_data_json[0]['close']
     four = historical_data_json[1]['close']
@@ -86,15 +88,8 @@ def stock_details(request, position_id):
     for i in range(len(historical_data_json)):
         historical_prices.append(historical_data_json[i]['close'])
         historical_dates.append(historical_data_json[i]['date'])
-        print(historical_dates)
 
+    return render(request, 'customers/stock_details.html',
+                  {'position': position, 'historical_data_json': historical_data_json,
+                   'historical_prices': historical_prices, 'historical_dates': historical_dates})
 
-
-
-
-
-
-    return render(request, 'customers/stock_details.html',{'position': position, 'historical_data_json': historical_data_json, 'historical_prices' :historical_prices , 'historical_dates': historical_dates})
-def update_all(request):
-
-    return render(request, 'customers/index.html')
