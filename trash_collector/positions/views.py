@@ -27,7 +27,10 @@ def create(request):
         stock_info = price_json.json()
         close_value = stock_info[0]['close']
         stock_close_value = close_value
-        new_position = Position(selected_ticker=selected_ticker, selected_value=selected_value,stock_close_value=stock_close_value, user_id=user.id)
+        selected_value_int= int(selected_value)
+        position_value = stock_close_value * selected_value_int
+        print(position_value)
+        new_position = Position(selected_ticker=selected_ticker, selected_value=selected_value,stock_close_value=stock_close_value, user_id=user.id, position_value=position_value)
         new_position.save()
         return HttpResponseRedirect(reverse('positions:index'))
     else:

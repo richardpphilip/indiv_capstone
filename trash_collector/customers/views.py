@@ -22,7 +22,7 @@ def index(request):
     portfolio_balance = 0
     for position in positions:
         if user.id == position.user_id:
-            portfolio_balance += position.stock_close_value
+            portfolio_balance += position.position_value
             selected_positions.append(position)
 
     return render(request, 'customers/index.html',
@@ -59,4 +59,5 @@ def stock_details(request, position_id):
     Position = apps.get_model('positions.Position')
     position = Position.objects.get(pk=position_id)
     print(position)
+    print(position.stock_close_value)
     return render(request, 'customers/stock_details.html',{'position': position})

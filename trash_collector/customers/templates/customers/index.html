@@ -14,6 +14,7 @@
   <th scope="col">Stock Ticker</th>
   <th scope="col">Number of Shares</th>
   <th scope="col"> Stock Value</th>
+  <th scope="col"> Position Value</th>
   <th scope="col">View Details </th>
 
   </thead>
@@ -29,7 +30,9 @@
     <td>
         {{selected_position.stock_close_value}}
     </td>
-
+    <td>
+        {{selected_position.position_value}}
+    </td>
     <td>
         <a href="{% url 'customers:stock_details' selected_position.id %}">View Details</a>
     </td>
