@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import Customer
 import requests
 from django.apps import apps
+import datetime
 import json
 
 # Create your views here.
@@ -60,10 +61,21 @@ def apicall(request):
 def stock_details(request, position_id):
     Position = apps.get_model('positions.Position')
     position = Position.objects.get(pk=position_id)
-    print(position)
-    print(position.stock_close_value)
-    return render(request, 'customers/stock_details.html',{'position': position})
+    today = datetime.date.today()
+    five_delta = datetime.timedelta(-10)
+    early_day = today + five_delta
+    historical_data = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}/prices?startDate={early_day}&endDate={today}&format=json&resampleFreq=daily',
+                 headers=headers)
+    historical_data_json= historical_data.json()
+
+    five = historical_data_json[0]['close']
+    four = historical_data_json[1]['close']
+    three = historical_data_json[2]['close']
+    two = historical_data_json[3]['close']
+    one = historical_data_json[4]['close']
+
+    return render(request, 'customers/stock_details.html',{'position': position, 'historical_data_json': historical_data_json, 'five': five, 'four': four, 'three': three, 'two': two, 'one': one})
 
 def update_all(request):
-    print("this works")
+
     return render(request, 'customers/index.html')
