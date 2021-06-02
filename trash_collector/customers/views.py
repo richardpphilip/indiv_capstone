@@ -6,8 +6,8 @@ from .models import Customer
 import requests
 from django.apps import apps
 import datetime
-import json
 
+import json
 # Create your views here.
 
 
@@ -73,6 +73,10 @@ def stock_details(request, position_id):
     three = historical_data_json[2]['close']
     two = historical_data_json[3]['close']
     one = historical_data_json[4]['close']
+    five_date_time = historical_data_json[0]['date']
+    five_date = datetime.strptime()
+    print(five_date_time)
+    print(type(five_date_time))
 
     return render(request, 'customers/stock_details.html',{'position': position, 'historical_data_json': historical_data_json, 'five': five, 'four': four, 'three': three, 'two': two, 'one': one})
 
