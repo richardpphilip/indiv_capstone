@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+
 from .models import Customer
 import requests
 from django.apps import apps
@@ -61,3 +63,7 @@ def stock_details(request, position_id):
     print(position)
     print(position.stock_close_value)
     return render(request, 'customers/stock_details.html',{'position': position})
+
+def update_all(request):
+    print("this works")
+    return render(request, 'customers/index.html')

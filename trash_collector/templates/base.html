@@ -13,6 +13,7 @@
   {% for group in user.groups.all%}
     {% if group.name == "Customers" %}
     <p>Customer Navbar</p>
+<a href="{% url 'customers:index' %}">Home</a>
     {% elif group.name == "Employees" %}
     <p>Employee Navbar</p>
     {% endif %}

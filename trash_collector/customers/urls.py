@@ -9,5 +9,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('stocks/', views.apicall, name="stock"),
     path('add', views.apicall, name='add'),
-    path('stock_details/<int:position_id>/', views.stock_details, name='stock_details')
+    path('stock_details/<int:position_id>/', views.stock_details, name='stock_details'),
+    path('update_all', views.update_all, name='update_all')
 ]

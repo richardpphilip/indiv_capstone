@@ -36,3 +36,7 @@ def create(request):
     else:
         print('error')
         return HttpResponseRedirect(reverse('positions:index'))
+
+
+
+
