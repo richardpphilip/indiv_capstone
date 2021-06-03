@@ -9,8 +9,13 @@
 
   <h2>Your Stock Positions</h2>
  <h3>The total value of your portfolio is:  ${{portfolio_balance}}</h3>
- <button><a href="{% url 'positions:update_all' %}">Refresh Stock Prices</a></button>
-<table class ="table">
+<form action="{% url 'positions:update_all' %}" method="POST">
+    {% csrf_token %}
+
+    <input type="submit" value ="Get Updated Prices">
+
+</form>
+ <table class ="table">
   <thead>
   <th scope="col">Stock Ticker</th>
   <th scope="col">Number of Shares</th>
