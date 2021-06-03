@@ -67,6 +67,19 @@ def stock_details(request, position_id):
     today = datetime.date.today()
     five_delta = datetime.timedelta(-10)
     early_day = today + five_delta
+    price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}/prices',
+                              headers=headers)
+    stock_info = price_json.json()
+
+    meta_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}',
+                             headers=headers)
+    stock_meta = meta_json.json()
+    stock_name = stock_meta['name']
+    stock_description = stock_meta['description']
+    close_value = stock_info[0]['close']
+    high_value = stock_info[0]['high']
+    low_value = stock_info[0]['low']
+    volume = stock_info[0]['volume']
     historical_data = requests.get(
         f'https://api.tiingo.com/tiingo/daily/{position}/prices?startDate={early_day}&endDate={today}&format=json&resampleFreq=daily',
         headers=headers)
@@ -87,5 +100,7 @@ def stock_details(request, position_id):
 
     return render(request, 'customers/stock_details.html',
                   {'position': position, 'historical_data_json': historical_data_json,
-                   'historical_prices': historical_prices, 'historical_dates': historical_dates, 'active_dates': active_dates})
+                   'historical_prices': historical_prices, 'historical_dates': historical_dates, 'active_dates': active_dates, 'close_value': close_value, 'high_value': high_value,
+                   'low_value': low_value, 'volume': volume, 'stock_name': stock_name,
+                   'stock_description': stock_description})
 

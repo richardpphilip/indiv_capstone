@@ -1,6 +1,6 @@
  {% extends 'base.html' %}
 
-{% block title %}{% block header %} {{position}} Stock Details{% endblock %}{% endblock %}
+ {% block title %}<center>{% block header %}{{position}} Stock{% endblock %}</center>{% endblock %}
  {% block scripts %}
  <script>
    $(document).ready(function(){
@@ -44,13 +44,24 @@
  {% endblock scripts %}
  {% block content %}
  {% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        <div class="col">
 
- <canvas id="myChart" width="200" height="100"></canvas>
-
-
-
-
-
+ Stock Name: {{stock_name}}<br>
+ Highest Price(last 24):{{high_value}}<br>
+ Lowest Price (last 24):{{low_value}}<br>
+ Volume: {{volume}}<br>
+ Closing value:{{close_value}}<br>
+        </div>
+        <div class="col-8">
+            Stock Description: {{stock_description}}<br>
+        </div>
+    </div>
+    <div class="row">
+ <canvas id="myChart" width="200" height="60"></canvas>
+    </div>
+</div>
 
  {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
