@@ -55,7 +55,7 @@ def update_all(request):
                 selected_ticker = position.selected_ticker
                 selected_value_int = int(selected_value)
                 position_value = stock_close_value * selected_value_int
-                position = Position(pk=user.id, selected_value=selected_value,
+                position = Position(pk=position.id, selected_value=selected_value,
                                         stock_close_value=stock_close_value,
                                         position_value=position_value, selected_ticker=selected_ticker, user_id=user.id)
                 position.save()
