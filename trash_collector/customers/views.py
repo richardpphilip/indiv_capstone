@@ -72,16 +72,12 @@ def stock_details(request, position_id):
         headers=headers)
     historical_data_json = historical_data.json()
 
-    five = historical_data_json[0]['close']
-    four = historical_data_json[1]['close']
-    three = historical_data_json[2]['close']
-    two = historical_data_json[3]['close']
-    one = historical_data_json[4]['close']
-    five_date_time = historical_data_json[0]['date']
-    four_date_time = historical_data_json[1]['date']
-    three_date_time = historical_data_json[2]['date']
-    two_date_time = historical_data_json[3]['date']
-    one_date_time = historical_data_json[4]['date']
+    # cant get the time converter to work :(
+    # five_date_time = historical_data_json[0]['date']
+    # print(five_date_time)
+    # five_date = datetime.datetime.strptime(five_date_time, "%Y-%m-%dT%H:%M:%SZ")
+    # print(five_date)
+
     i = 0
     historical_prices = []
     historical_dates = []
