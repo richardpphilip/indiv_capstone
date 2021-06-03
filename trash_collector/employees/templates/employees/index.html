@@ -5,6 +5,12 @@
 {% block content %}
   {% if user.is_authenticated %}
     Hello Employee {{ user.username }}!
+<form action="{% url 'employees:send_email' %}" >
+    {% csrf_token %}
+
+    <input type="submit" value ="Send Email to Customers">
+
+</form>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
