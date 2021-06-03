@@ -71,14 +71,14 @@ def stock_details(request, position_id):
         f'https://api.tiingo.com/tiingo/daily/{position}/prices?startDate={early_day}&endDate={today}&format=json&resampleFreq=daily',
         headers=headers)
     historical_data_json = historical_data.json()
+    active_dates = []
 
-    # cant get the time converter to work :(
-    # five_date_time = historical_data_json[0]['date']
-    # print(five_date_time)
-    # five_date = datetime.datetime.strptime(five_date_time, "%Y-%m-%dT%H:%M:%SZ")
-    # print(five_date)
-
+    for i in range(len(historical_data_json)):
+        date_time = datetime.datetime.strptime(historical_data_json[i]['date'], "%Y-%m-%dT%H:%M:%S.%fZ")
+        date_time_list = date_time.strftime("%B %d")
+        active_dates.append(date_time_list)
     i = 0
+
     historical_prices = []
     historical_dates = []
     for i in range(len(historical_data_json)):
@@ -87,5 +87,5 @@ def stock_details(request, position_id):
 
     return render(request, 'customers/stock_details.html',
                   {'position': position, 'historical_data_json': historical_data_json,
-                   'historical_prices': historical_prices, 'historical_dates': historical_dates})
+                   'historical_prices': historical_prices, 'historical_dates': historical_dates, 'active_dates': active_dates})
 
