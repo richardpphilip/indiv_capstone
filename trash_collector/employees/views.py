@@ -31,22 +31,27 @@ def send_email(request):
     for user in users:
         for position in positions:
             if user.id == position.user_id and user.is_employee == False:
-                # stock_news = requests.get(f'https://api.tiingo.com/tiingo/news?tickers=aapl',
-                #                           headers=headers)
-                # stock_news_json = stock_news.json()
+                stock_news = requests.get(f'https://api.tiingo.com/tiingo/news?tickers={position}',
+                                          headers=headers)
+                stock_news_json = stock_news.json()
+                stock_news_description =stock_news_json[0]['description']
                 price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}/prices',
                                           headers=headers)
                 stock_info = price_json.json()
+                meta_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{position}',
+                                         headers=headers)
+                stock_meta = meta_json.json()
+                stock_name = stock_meta['name']
                 close_value = stock_info[0]['close']
-                with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-                    smtp.ehlo()
-                    smtp.starttls()
-                    smtp.ehlo()
-                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                    subject = f'{position} Stock Update'
-                    body = f' The closing value for {position} was ${close_value} yesterday.'
-                    msg = f'Subject:{subject}\n\n{body}'
-                    smtp.sendmail(EMAIL_ADDRESS, f'{user.email}', msg)
+                # with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+                #     smtp.ehlo()
+                #     smtp.starttls()
+                #     smtp.ehlo()
+                #     smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                #     subject = f'{stock_name} Stock Update'
+                #     body = f' The closing value for {position} was ${close_value} yesterday.'
+                #     msg = f'Subject:{subject}\n\n{body}'
+                #     smtp.sendmail(EMAIL_ADDRESS, f'{user.email}', msg)
             else:
                 print(user.first_name)
     return HttpResponseRedirect(reverse('employees:index'))
