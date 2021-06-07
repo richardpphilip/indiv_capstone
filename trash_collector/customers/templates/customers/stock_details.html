@@ -1,6 +1,6 @@
  {% extends 'base.html' %}
 
- {% block title %}<center>{% block header %}{{position}} Stock{% endblock %}</center>{% endblock %}
+ {% block title %}{% block header %}{{position}} Stock{% endblock %}{% endblock %}
  {% block scripts %}
  <script>
    $(document).ready(function(){
@@ -61,8 +61,8 @@
     <div class="row">
  <canvas id="myChart" width="200" height="60"></canvas>
     </div>
-</div>
 
+      <div class="row">
 {{stock_news_one}}<br>
  <a href={{stock_url_one}}>{{stock_url_one}}</a><br>
  {{stock_news_two}}<br>
@@ -73,6 +73,8 @@
  <a href={{stock_url_four}}>{{stock_url_four}}</a><br>
  {{stock_news_five}}<br>
  <a href={{stock_url_five}}>{{stock_url_five}}</a><br>
+    </div>
+</div>
 
  {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
