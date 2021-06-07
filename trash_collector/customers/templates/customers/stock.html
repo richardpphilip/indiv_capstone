@@ -1,18 +1,83 @@
  {% extends 'base.html' %}
 
-{% block title %}{% block header %} Stock Home {% endblock %}{% endblock %}
+ {% block title %}{% block header %}{{position}} Stock Details {% endblock %}{% endblock %}
+ {% block scripts %}
+ <script>
+   $(document).ready(function(){
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [{% for active_date in active_dates %}'{{active_date}}',{% endfor %}],
+        datasets: [{
+            label: ' Stock: {{position}} ',
+            data: [{% for historical_price in historical_prices %}'{{historical_price}}',{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+});
+   })
+ </script>
+ {% endblock scripts %}
+ {% block content %}
+ {% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-{% block content %}
-  {% if user.is_authenticated %}
-  Stock ticker:{{ticker}}<br>
  Stock Name: {{stock_name}}<br>
  Highest Price(last 24):{{high_value}}<br>
  Lowest Price (last 24):{{low_value}}<br>
  Volume: {{volume}}<br>
  Closing value:{{close_value}}<br>
-  Stock Description: {{stock_description}}<br>
+        </div>
+        <div class="col-8">
+            Stock Description: {{stock_description}}<br>
+        </div>
+    </div>
+    <div class="row">
+ <canvas id="myChart" width="200" height="60"></canvas>
+    </div>
 
-  {% else %}
+      <div class="row">
+          <center><h3>Relevant News</h3></center>
+{{stock_news_one}}<br>
+ <a href={{stock_url_one}}>{{stock_url_one}}</a><br>
+ {{stock_news_two}}<br>
+ <a href={{stock_url_two}}>{{stock_url_two}}</a><br>
+ {{stock_news_three}}<br>
+ <a href={{stock_url_three}}>{{stock_url_three}}</a><br>
+ {{stock_news_four}}<br>
+ <a href={{stock_url_four}}>{{stock_url_four}}</a><br>
+ {{stock_news_five}}<br>
+ <a href={{stock_url_five}}>{{stock_url_five}}</a><br>
+    </div>
+</div>
+
+ {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
     <a href="{% url 'accounts:register' %}">Sign Up</a>
