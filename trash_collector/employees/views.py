@@ -19,7 +19,6 @@ from django.urls import reverse
 
 
 def index(request):
-    # Get the Customer model from the other app, it can now be used to query the db
     Customer = apps.get_model('customers.Customer')
 
     return render(request, 'employees/index.html')
@@ -57,17 +56,16 @@ def send_email(request):
                 stock_email_list_string += "Update for Stock:"
                 stock_email_list_string += stock_meta['name']
                 stock_email_list_string += "-"
-                stock_email_list_string += f"The price of the Stock as of {today} is:"
+                stock_email_list_string += f"The price of the Stock as of {today} is:  $"
                 stock_email_price_string = str(stock_info[0]['close'])
                 stock_email_list_string += stock_email_price_string
                 stock_email_list_string += "-"
                 stock_email_list_string += "A snippet of news I think you might find helpful is:"
                 stock_email_list_string += stock_news_json[0]['description']
-                stock_email_list_string += "/"
                 stock_email_list_string += "-"
                 stock_email_list_string += "If you want to read more this is the link:"
-                stock_email_list_string += stock_news_json[0]['url']
-                stock_email_list_string += "----------------------"
+                stock_email_list_string += stock_news_json[0]['url'] + " "
+                stock_email_list_string += f"---------END OF {position} -------------"
         EMAIL_ADDRESS = 'stock.tracker.philip@gmail.com'
         EMAIL_PASSWORD = 'NickMangold74!'
         print(stock_email_list_string)

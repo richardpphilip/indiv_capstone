@@ -1,20 +1,29 @@
  {% extends 'base.html' %}
 
-{% block title %}{% block header %} Customer Home {% endblock %}{% endblock %}
+{% block title %} Your Stock Positions {% endblock %}
 
 {% block content %}
   {% if user.is_authenticated %}
-    Hello Customer {{ user.username }}!
 
+<div class="container">
+    <div class="row">
 
-  <h2>Your Stock Positions</h2>
- <h3>The total value of your portfolio is:  ${{portfolio_balance}}</h3>
+        <div class="col">
+ <h3>The total value of {{user.username}}'s portfolio is:  ${{portfolio_balance}}</h3>
+        </div>
+    <div class="col-sm-4">
 <form action="{% url 'positions:update_all' %}" method="POST">
     {% csrf_token %}
 
     <input type="submit" value ="Get Updated Prices">
 
-</form>
+    </form>
+        </div>
+    </div>
+
+
+<div class="row">
+
  <table class ="table">
   <thead>
   <th scope="col">Stock Ticker</th>
@@ -35,16 +44,16 @@
  {{selected_position.selected_value}}
  </td>
     <td>
-        {{selected_position.stock_close_value}}
+        ${{selected_position.stock_close_value}}
     </td>
     <td>
-        {{selected_position.position_value}}
+        ${{selected_position.position_value}}
     </td>
     <td>
-        <a href="{% url 'customers:stock_details' selected_position.id %}">View Details</a>
+        <button type = "button"> <a href="{% url 'customers:stock_details' selected_position.id %}">View Details</a></button>
     </td>
         <td>
-        <a href="{% url 'positions:edit' selected_position.id %}">Change Share Number</a>
+            <button type="button"> <a href="{% url 'positions:edit' selected_position.id %}">Edit</a></button>
     </td>
 {% endfor %}
 
@@ -54,14 +63,16 @@
   </tbody>
 </table>
  <br>
- <h2>Search for a Stock!</h2>
-<form action="add">
-  Enter Stock Ticker: <input type="text" name="ticker"><br>
+    </div>
+    <div class="row">
+        <h3>Search for a stock!</h3>
+                 <form action="add">
+  Enter Stock Ticker: <input type="text" name="ticker">
   <input type="submit">
+        </form>
 
-
-</form>
-<a href="{% url 'positions:index' %}">Add a Stock Position</a>
+    </div>
+</div>
   {% else %}
     <p>You are at the customer index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
