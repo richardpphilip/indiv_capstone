@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+ {% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}{% block header %} Position Index{% endblock %}{% endblock %}
+ {% block content %}
+ {% if user.is_authenticated %}
+    Hello Customer {{ user.username }}!
+<form method="post">
+ {% csrf_token %}
+ Share Number:<input type="number" name="selected_value" id="selected_value">
+ <input type="submit" value="Edit Stock Share Number">
+</form>
+
+
+
+  {% else %}
+    <p>You are at the customer index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}

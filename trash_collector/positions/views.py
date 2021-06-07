@@ -16,6 +16,28 @@ def index(request):
     return render(request, 'positions/index.html')
 
 
+def edit(request, position_id):
+    if request.method == 'POST':
+        position = Position.objects.get(pk=position_id)
+        user = request.user
+        selected_ticker = position.selected_ticker
+        selected_value = request.POST.get('selected_value')
+        price_json = requests.get(f'https://api.tiingo.com/tiingo/daily/{selected_ticker}/prices',
+                                  headers=headers)
+        stock_info = price_json.json()
+        close_value = stock_info[0]['close']
+        stock_close_value = close_value
+        selected_value_int = int(selected_value)
+        position_value = stock_close_value * selected_value_int
+        position = Position(pk=position.id, selected_value=selected_value,
+                            stock_close_value=stock_close_value,
+                            position_value=position_value, selected_ticker=selected_ticker, user_id=user.id)
+        position.save()
+        return HttpResponseRedirect(reverse('positions:index'))
+    else:
+        return render(request, 'positions/edit.html')
+
+
 def create(request):
     if request.method == 'POST':
         user = request.user
@@ -56,7 +78,7 @@ def update_all(request):
                 selected_value_int = int(selected_value)
                 position_value = stock_close_value * selected_value_int
                 position = Position(pk=position.id, selected_value=selected_value,
-                                        stock_close_value=stock_close_value,
-                                        position_value=position_value, selected_ticker=selected_ticker, user_id=user.id)
+                                    stock_close_value=stock_close_value,
+                                    position_value=position_value, selected_ticker=selected_ticker, user_id=user.id)
                 position.save()
-        return HttpResponseRedirect(reverse('customers:index'))
+        return HttpResponseRedirect(reverse('positions:index'))

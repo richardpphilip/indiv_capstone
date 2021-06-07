@@ -22,6 +22,7 @@
   <th scope="col"> Stock Value</th>
   <th scope="col"> Position Value</th>
   <th scope="col">View Details </th>
+  <th scope="col"> Edit Share Number</th>
 
   </thead>
 <tbody>
@@ -41,6 +42,9 @@
     </td>
     <td>
         <a href="{% url 'customers:stock_details' selected_position.id %}">View Details</a>
+    </td>
+        <td>
+        <a href="{% url 'positions:edit' selected_position.id %}">Change Share Number</a>
     </td>
 {% endfor %}
 
